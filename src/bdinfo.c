@@ -600,8 +600,6 @@ const char **generate_ffargv(struct tilist *til, const char **langs,
 
 	*ff.argp1++ = "ffmpeg";
 	*ff.argp1++ = "-fix_sub_duration";
-	*ff.argp1++ = "-movflags";
-	*ff.argp1++ = "faststart";
 	*ff.argp1++ = "-playlist";
 	ARGV_APPENDF(ff.argp1, ff.argp2, "%" PRIu32, ti->playlist);
 	*ff.argp1++ = "-angle";
@@ -628,6 +626,9 @@ const char **generate_ffargv(struct tilist *til, const char **langs,
 		*ff.argp1++ = "-map_chapters";
 		*ff.argp1++ = "1";
 	}
+	*ff.argp1++ = "-movflags";
+	*ff.argp1++ = "+faststart";
+	
 	*ff.argp1++ = dst;
 	*ff.argp1 = NULL;
 
