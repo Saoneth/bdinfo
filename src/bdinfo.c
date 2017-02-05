@@ -560,12 +560,12 @@ const char **generate_ffargv(struct tilist *til, const char **langs,
 		const char *src, const char *dst, int chapterfd, int skip_ig)
 {
 	/*
-	ffmpeg -playlist %d -angle %d -i bluray:%s [-i /proc/self/fd/%d]
+	ffmpeg -fix_sub_duration -movflags faststart -playlist %d -angle %d -i bluray:%s [-i /proc/self/fd/%d]
 			-c copy [[-map 0:%c:%d] [-metadata:s:%d language=%s]]...
 			[-map_chapters 1] %s
 	*/
 	BLURAY_TITLE_INFO *ti = til->ti;
-	size_t ffargc = 11;
+	size_t ffargc = 11 + 2;
 	size_t ffargn = (DECIMAL_BUFFER_LEN(uint32_t) + 1)
 			+ (DECIMAL_BUFFER_LEN(uint8_t) + 1) + (7 + strlen(src) + 1);
 	if(chapterfd != -1)
@@ -600,6 +600,8 @@ const char **generate_ffargv(struct tilist *til, const char **langs,
 
 	*ff.argp1++ = "ffmpeg";
 	*ff.argp1++ = "-fix_sub_duration";
+	*ff.argp1++ = "-movflags";
+	*ff.argp1++ = "faststart";
 	*ff.argp1++ = "-playlist";
 	ARGV_APPENDF(ff.argp1, ff.argp2, "%" PRIu32, ti->playlist);
 	*ff.argp1++ = "-angle";
